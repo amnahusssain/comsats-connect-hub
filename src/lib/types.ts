@@ -66,6 +66,7 @@ export type PastPaper = {
   fileUrl: string;
   uploadedBy: User;
   approved: boolean;
+  category: 'Midterm' | 'Final';
 };
 
 export type Event = {

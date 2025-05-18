@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { mockPapers } from '@/lib/data';
-import { Search, FileText, Download, Plus } from 'lucide-react';
+import { Search, FileText, Download, Plus, Filter } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -15,6 +15,16 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { useToast } from '@/components/ui/use-toast';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "@/components/ui/radio-group";
 
 const PastPapers = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -24,14 +34,22 @@ const PastPapers = () => {
     courseName: '',
     year: '',
     semester: '',
+    category: 'Final' as 'Midterm' | 'Final',
     file: null as File | null,
   });
+  const [activeTab, setActiveTab] = useState('all');
   const { toast } = useToast();
   
-  const filteredPapers = mockPapers.filter(paper => 
-    paper.courseCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    paper.courseName.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredPapers = mockPapers.filter(paper => {
+    const matchesSearch = paper.courseCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      paper.courseName.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    if (activeTab === 'all') {
+      return matchesSearch;
+    } else {
+      return matchesSearch && paper.category.toLowerCase() === activeTab.toLowerCase();
+    }
+  });
   
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -65,6 +83,7 @@ const PastPapers = () => {
       courseName: '',
       year: '',
       semester: '',
+      category: 'Final',
       file: null
     });
     
@@ -155,6 +174,26 @@ const PastPapers = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
+                  <Label>Paper Category *</Label>
+                  <RadioGroup
+                    defaultValue={uploadDetails.category}
+                    className="flex gap-4"
+                    onValueChange={(value) => setUploadDetails({
+                      ...uploadDetails,
+                      category: value as 'Midterm' | 'Final'
+                    })}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="Midterm" id="midterm" />
+                      <Label htmlFor="midterm">Midterm</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="Final" id="final" />
+                      <Label htmlFor="final">Final</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+                <div className="space-y-2">
                   <Label htmlFor="file">Upload File *</Label>
                   <Input
                     id="file"
@@ -173,6 +212,19 @@ const PastPapers = () => {
         </Dialog>
       </div>
       
+      <Tabs
+        defaultValue="all"
+        className="w-full mb-6"
+        value={activeTab}
+        onValueChange={setActiveTab}
+      >
+        <TabsList className="w-full grid grid-cols-3 mb-4">
+          <TabsTrigger value="all">All Papers</TabsTrigger>
+          <TabsTrigger value="midterm">Midterms</TabsTrigger>
+          <TabsTrigger value="final">Finals</TabsTrigger>
+        </TabsList>
+      </Tabs>
+      
       <div className="space-y-3">
         {filteredPapers.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
@@ -186,7 +238,12 @@ const PastPapers = () => {
                   <FileText className="h-5 w-5 mr-2 text-comsats-blue" />
                   <div>
                     <h3 className="font-medium text-sm">{paper.courseCode}: {paper.courseName}</h3>
-                    <p className="text-xs text-gray-500">{paper.semester} {paper.year}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-xs text-gray-500">{paper.semester} {paper.year}</p>
+                      <span className={`text-xs px-2 py-1 rounded-full ${paper.category === 'Midterm' ? 'bg-orange-100 text-orange-800' : 'bg-blue-100 text-blue-800'}`}>
+                        {paper.category}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

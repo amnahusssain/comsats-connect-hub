@@ -1,4 +1,3 @@
-
 import { Campus, Post, JobOpportunity, PastPaper, Event } from './types';
 
 export const campuses: Campus[] = [
@@ -169,6 +168,7 @@ export const mockPapers: PastPaper[] = [
       campus: campuses[2],
     },
     approved: true,
+    category: 'Final',
   },
   {
     id: '2',
@@ -184,6 +184,7 @@ export const mockPapers: PastPaper[] = [
       campus: campuses[4],
     },
     approved: true,
+    category: 'Midterm',
   },
   {
     id: '3',
@@ -199,6 +200,7 @@ export const mockPapers: PastPaper[] = [
       campus: campuses[0],
     },
     approved: true,
+    category: 'Final',
   }
 ];
 
