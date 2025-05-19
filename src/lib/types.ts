@@ -31,6 +31,10 @@ export type Post = {
   likes: number;
   comments: Comment[];
   hasLiked: boolean;
+  reactions: {
+    [emoji: string]: number;
+  };
+  userReaction: string | null;
 };
 
 export type Comment = {

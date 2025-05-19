@@ -8,13 +8,19 @@ import {
   MessageSquare, 
   Image as ImageIcon, 
   Video,
-  Send
+  Send,
+  SmilePlus
 } from 'lucide-react';
 import { mockPosts } from '@/lib/data';
 import { Post } from '@/lib/types';
 import { useAuth } from '@/contexts/AuthContext';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { format } from 'date-fns';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const HomePage = () => {
   const { user } = useAuth();
@@ -24,6 +30,8 @@ const HomePage = () => {
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [showComments, setShowComments] = useState<{[key: string]: boolean}>({});
   const [commentText, setCommentText] = useState<{[key: string]: string}>({});
+  
+  const availableReactions = ['👍', '❤️', '😊', '🎉', '👏'];
   
   const toggleComments = (postId: string) => {
     setShowComments(prev => ({
@@ -40,6 +48,35 @@ const HomePage = () => {
             ...post,
             likes: post.hasLiked ? post.likes - 1 : post.likes + 1,
             hasLiked: !post.hasLiked
+          };
+        }
+        return post;
+      })
+    );
+  };
+  
+  const handleReaction = (postId: string, reaction: string) => {
+    setPosts(prevPosts => 
+      prevPosts.map(post => {
+        if (post.id === postId) {
+          // If there was a previous reaction, remove it
+          const updatedReactions = { ...post.reactions };
+          
+          if (post.userReaction) {
+            updatedReactions[post.userReaction] = (updatedReactions[post.userReaction] || 1) - 1;
+          }
+          
+          // Add new reaction or toggle if it's the same
+          const newUserReaction = post.userReaction === reaction ? null : reaction;
+          
+          if (newUserReaction) {
+            updatedReactions[reaction] = (updatedReactions[reaction] || 0) + 1;
+          }
+          
+          return {
+            ...post,
+            reactions: updatedReactions,
+            userReaction: newUserReaction
           };
         }
         return post;
@@ -101,7 +138,15 @@ const HomePage = () => {
       createdAt: new Date(),
       likes: 0,
       comments: [],
-      hasLiked: false
+      hasLiked: false,
+      reactions: {
+        '👍': 0,
+        '❤️': 0,
+        '😊': 0,
+        '🎉': 0,
+        '👏': 0
+      },
+      userReaction: null
     };
     
     setPosts(prev => [newPost, ...prev]);
@@ -216,6 +261,20 @@ const HomePage = () => {
               </div>
             )}
             
+            {/* Reactions Display */}
+            <div className="px-4 py-2">
+              <div className="flex gap-1">
+                {Object.entries(post.reactions)
+                  .filter(([_, count]) => count > 0)
+                  .map(([emoji, count]) => (
+                    <div key={emoji} className="text-xs bg-gray-100 rounded-full px-2 py-1 flex items-center">
+                      <span className="mr-1">{emoji}</span>
+                      <span>{count}</span>
+                    </div>
+                  ))}
+              </div>
+            </div>
+            
             {/* Post Stats */}
             <div className="px-4 py-2 border-t border-b text-xs text-gray-500 flex justify-between">
               <div>{post.likes} likes</div>
@@ -223,7 +282,32 @@ const HomePage = () => {
             </div>
             
             {/* Post Actions */}
-            <div className="grid grid-cols-2 divide-x">
+            <div className="grid grid-cols-3 divide-x">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    className={`rounded-none py-2 text-gray-600 ${post.userReaction ? 'text-blue-500 font-medium' : ''}`}
+                  >
+                    <SmilePlus className={`h-4 w-4 mr-2`} />
+                    {post.userReaction || 'React'}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-2" align="start">
+                  <div className="flex gap-2">
+                    {availableReactions.map(emoji => (
+                      <button
+                        key={emoji}
+                        className={`text-xl hover:scale-125 transition-transform p-1 rounded-full ${post.userReaction === emoji ? 'bg-gray-100' : ''}`}
+                        onClick={() => handleReaction(post.id, emoji)}
+                      >
+                        {emoji}
+                      </button>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+              
               <Button 
                 variant="ghost" 
                 className={`rounded-none py-2 ${post.hasLiked ? 'text-red-500' : 'text-gray-600'}`}

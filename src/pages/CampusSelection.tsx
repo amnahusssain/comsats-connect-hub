@@ -28,21 +28,18 @@ const CampusSelection = () => {
           Choose the COMSATS campus you belong to
         </p>
         
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-2">
           {campuses.map((campus) => (
             <div
               key={campus.id}
-              className={`campus-card ${selected === campus.id ? 'campus-card-selected' : ''}`}
+              className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                selected === campus.id 
+                  ? 'bg-comsats-blue text-white' 
+                  : 'bg-white hover:bg-gray-100'
+              }`}
               onClick={() => setSelected(campus.id)}
             >
-              <div className="h-24 w-24 mb-3 flex items-center justify-center">
-                <img
-                  src={campus.image || "/assets/campus-placeholder.jpg"}
-                  alt={campus.name}
-                  className="h-full w-full object-cover rounded"
-                />
-              </div>
-              <h3 className="text-sm font-medium text-center">{campus.name}</h3>
+              <h3 className="text-center font-medium">{campus.name}</h3>
             </div>
           ))}
         </div>

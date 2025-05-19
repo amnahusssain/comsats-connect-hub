@@ -15,6 +15,7 @@ import { format } from 'date-fns';
 import { Event } from '@/lib/types';
 
 const Societies = () => {
+  const allEvents = mockEvents;
   const onlineEvents = mockEvents.filter(event => event.type === 'Online');
   const physicalEvents = mockEvents.filter(event => event.type === 'Physical');
   
@@ -104,11 +105,23 @@ const Societies = () => {
         Society Events
       </h1>
       
-      <Tabs defaultValue="physical">
-        <TabsList className="grid w-full grid-cols-2">
+      <Tabs defaultValue="all">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="all">All Events</TabsTrigger>
           <TabsTrigger value="physical">Physical Events</TabsTrigger>
           <TabsTrigger value="online">Online Events</TabsTrigger>
         </TabsList>
+        <TabsContent value="all" className="mt-6">
+          {allEvents.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">
+              No events currently scheduled
+            </div>
+          ) : (
+            allEvents.map(event => (
+              <EventCard key={event.id} event={event} />
+            ))
+          )}
+        </TabsContent>
         <TabsContent value="physical" className="mt-6">
           {physicalEvents.length === 0 ? (
             <div className="text-center py-8 text-gray-500">

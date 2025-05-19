@@ -1,3 +1,4 @@
+
 import { Campus, Post, JobOpportunity, PastPaper, Event } from './types';
 
 export const campuses: Campus[] = [
@@ -74,6 +75,14 @@ export const mockPosts: Post[] = [
       }
     ],
     hasLiked: false,
+    reactions: {
+      '👍': 12,
+      '❤️': 8,
+      '😊': 5,
+      '🎉': 3,
+      '👏': 7
+    },
+    userReaction: null
   },
   {
     id: '2',
@@ -103,6 +112,14 @@ export const mockPosts: Post[] = [
       }
     ],
     hasLiked: true,
+    reactions: {
+      '👍': 25,
+      '❤️': 15,
+      '😊': 10,
+      '🎉': 18,
+      '👏': 19
+    },
+    userReaction: '👏'
   }
 ];
 
@@ -150,6 +167,72 @@ export const mockJobs: JobOpportunity[] = [
       profilePicture: '/assets/alumni2.jpg',
     },
     postedAt: new Date('2023-05-14'),
+  },
+  {
+    id: '3',
+    jobTitle: 'Frontend Developer',
+    companyName: 'WebTech Solutions',
+    workStyle: 'Hybrid',
+    salary: 'PKR 90,000 - 120,000',
+    officeLocation: 'DHA Phase 5, Lahore',
+    package: 'Medical insurance, lunch allowance, transport',
+    workingHours: '10 AM - 6 PM',
+    qualification: 'BS/MS Computer Science, proficiency in React, Redux, and TypeScript',
+    applyLink: 'https://example.com/webtech-jobs',
+    companyWebsite: 'https://webtech.pk',
+    companyLinkedin: 'https://linkedin.com/company/webtech-solutions',
+    postedBy: {
+      id: '107',
+      name: 'Bilal Ahmed',
+      email: 'bilal@alumni.cuilahore.edu.pk',
+      campus: campuses[1],
+      profilePicture: '/assets/alumni3.jpg',
+    },
+    postedAt: new Date('2023-05-13'),
+  },
+  {
+    id: '4',
+    jobTitle: 'AI Research Assistant',
+    companyName: 'Neural Technologies',
+    workStyle: 'Online',
+    salary: 'PKR 75,000 - 85,000',
+    officeLocation: 'Remote',
+    package: 'Flexible hours, quarterly performance bonus',
+    workingHours: 'Flexible (20-30 hours/week)',
+    qualification: 'MS/PhD in AI, Machine Learning or related field, experience with PyTorch',
+    applyLink: 'https://neural-tech.com/careers',
+    companyWebsite: 'https://neural-tech.com',
+    companyLinkedin: 'https://linkedin.com/company/neural-tech',
+    postedBy: {
+      id: '108',
+      name: 'Amna Khan',
+      email: 'amna@alumni.cuiislamabad.edu.pk',
+      campus: campuses[0],
+      profilePicture: '/assets/alumni4.jpg',
+    },
+    postedAt: new Date('2023-05-10'),
+  },
+  {
+    id: '5',
+    jobTitle: 'DevOps Engineer',
+    companyName: 'CloudNative Services',
+    workStyle: 'On-Site',
+    salary: 'PKR 150,000 - 200,000',
+    officeLocation: 'F-10, Islamabad',
+    package: 'Health insurance, annual bonus, paid leave, gym membership',
+    workingHours: '9 AM - 5 PM',
+    qualification: 'BS Computer Science, 2+ years experience with AWS, Docker, Kubernetes',
+    applyLink: 'https://cloudnative.pk/careers',
+    companyWebsite: 'https://cloudnative.pk',
+    companyLinkedin: 'https://linkedin.com/company/cloudnative',
+    postedBy: {
+      id: '109',
+      name: 'Fahad Ali',
+      email: 'fahad@alumni.cuiislamabad.edu.pk',
+      campus: campuses[0],
+      profilePicture: '/assets/alumni5.jpg',
+    },
+    postedAt: new Date('2023-05-08'),
   }
 ];
 
@@ -227,5 +310,52 @@ export const mockEvents: Event[] = [
     details: 'Learn modern web development techniques with React and Node.js. Open to all COMSATS students.',
     organizer: 'Computing Society',
     image: '/assets/event2.jpg',
+  },
+  {
+    id: '3',
+    title: 'Entrepreneurship Summit',
+    type: 'Physical',
+    date: new Date('2023-06-25T09:00:00'),
+    location: 'Conference Hall, COMSATS Lahore',
+    campus: 'Lahore',
+    details: 'A day-long event featuring successful entrepreneurs sharing their journeys, panel discussions, and networking opportunities for aspiring business owners.',
+    organizer: 'COMSATS Business Society',
+    image: '/assets/event3.jpg',
+  },
+  {
+    id: '4',
+    title: 'Artificial Intelligence Webinar',
+    type: 'Online',
+    date: new Date('2023-06-20T15:30:00'),
+    location: 'Online',
+    campus: 'All Campuses',
+    joiningLink: 'https://zoom.us/j/ai-webinar',
+    details: 'Learn about the latest advancements in AI and machine learning from industry experts. Special focus on applications in healthcare and education.',
+    organizer: 'AI Research Group',
+    image: '/assets/event4.jpg',
+  },
+  {
+    id: '5',
+    title: 'Annual Sports Gala',
+    type: 'Physical',
+    date: new Date('2023-07-05T08:00:00'),
+    location: 'Sports Complex, COMSATS Abbottabad',
+    campus: 'Abbottabad',
+    details: 'Three-day sports competition featuring cricket, football, basketball, table tennis, and athletics. Open to all departments and batches.',
+    organizer: 'Sports Society',
+    image: '/assets/event5.jpg',
+  },
+  {
+    id: '6',
+    title: 'Research Methodology Workshop',
+    type: 'Online',
+    date: new Date('2023-06-28T11:00:00'),
+    location: 'Online',
+    campus: 'All Campuses',
+    joiningLink: 'https://meet.google.com/research-workshop',
+    details: 'Learn effective research methodologies, paper writing techniques, and publishing strategies from experienced academics.',
+    organizer: 'COMSATS Research Department',
+    image: '/assets/event6.jpg',
   }
 ];
+
